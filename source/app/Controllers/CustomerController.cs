@@ -19,6 +19,7 @@ namespace app.Controllers
             _repository = repository;
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<CustomerPayload>>> GetCustomersAsync() =>
             Ok(await _repository.GetCustomersAsync());
 
@@ -33,10 +34,13 @@ namespace app.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<CustomerPayload>> AddCustomerAsync([FromBody] CustomerInput input) =>
             Ok(await _repository.AddCustomerAsync(input));
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CustomerPayload>> UpdateCustomerAsync([FromRoute] Guid id, [FromBody] CustomerInput input)
         {
             var customer = await _repository.UpdateCustomerAsync(id, input);
@@ -45,6 +49,8 @@ namespace app.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CustomerPayload>> RemoveCustomerAsync(Guid id)
         {
             var customer = await _repository.RemoveCustomerAsync(id);
