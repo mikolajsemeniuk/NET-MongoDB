@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using app.Inputs;
@@ -23,5 +24,20 @@ namespace app.Controllers
         [HttpPost]
         public async Task<ActionResult<CustomerPayload>> AddCustomerAsync([FromBody] CustomerInput input) =>
             Ok(await _repository.AddCustomerAsync(input));
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CustomerPayload>> GetCustomerAsync(Guid id) =>
+            Ok(await _repository.GetCustomerAsync(id));
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CustomerPayload>> AddCustomerAsync([FromRoute] Guid id, [FromBody] CustomerInput input) =>
+            Ok(await _repository.UpdateCustomerAsync(id, input));
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<CustomerPayload>> RemoveCustomerAsync(Guid id)
+        {
+            await _repository.RemoveCustomerAsync(id);
+            return Ok();
+        }
     }
 }

@@ -46,3 +46,4 @@
 /Users/mikolajsemeniuk/Projects/C#/NET-MongoDB/source/app/obj/Debug/net5.0/ref/app.dll
 /Users/mikolajsemeniuk/Projects/C#/NET-MongoDB/source/app/obj/Debug/net5.0/app.pdb
 /Users/mikolajsemeniuk/Projects/C#/NET-MongoDB/source/app/obj/Debug/net5.0/app.genruntimeconfig.cache
+/Users/mikolajsemeniuk/Projects/C#/NET-MongoDB/source/app/bin/Debug/net5.0/OneOf.dll

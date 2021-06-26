@@ -30,6 +30,17 @@ namespace app.Services
                 })
                 .ToListAsync();
 
+        public async Task<CustomerPayload> GetCustomerAsync(Guid id) =>
+            await _context.Customers
+                .Find(filter.Eq(customer => customer.CustomerId, id))
+                .Project(customer => new CustomerPayload
+                {
+                    Id = customer.CustomerId,
+                    Name = customer.Name,
+                    Surname = customer.Surname
+                })
+                .FirstOrDefaultAsync();
+
         public async Task<CustomerPayload> AddCustomerAsync(CustomerInput input)
         {
             var customer = new Customer
@@ -45,5 +56,25 @@ namespace app.Services
                 Surname = customer.Surname
             };
         }
+
+        public async Task<CustomerPayload> UpdateCustomerAsync(Guid id, CustomerInput input)
+        {
+            var customer = await _context.Customers
+                .Find(filter.Eq(customer => customer.CustomerId, id))
+                .FirstOrDefaultAsync();
+
+            customer.Name = input.Name;
+            customer.Surname = input.Surname;
+            await _context.Customers.ReplaceOneAsync(filter.Eq(customer => customer.CustomerId, id), customer);
+            return new CustomerPayload
+            {
+                Id = customer.CustomerId,
+                Name = customer.Name,
+                Surname = customer.Surname
+            };
+        }
+
+        public async Task RemoveCustomerAsync(Guid id) =>
+            await _context.Customers.DeleteOneAsync(filter.Eq(customer => customer.CustomerId, id));
     }
 }
