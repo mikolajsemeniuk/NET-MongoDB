@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using app.Data;
+using app.Interfaces;
+using app.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace app
 {
@@ -26,7 +30,14 @@ namespace app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<DataContext>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddSingleton(serviceProvider => 
+            {
+                // var mongoClient = new MongoClient($"mongodb://{Configuration["MongoDbSettings:Host"]}:{Configuration["MongoDbSettings:Port"]}");
+                var mongoClient = new MongoClient($"mongodb://root:P%40ssw0rd@localhost:27017");
+                return mongoClient.GetDatabase(Configuration["MongoDbSettings:Collection"]);
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
